@@ -17,11 +17,12 @@ fi
 APP=$(realpath "$1")
 
 echo "docker run -it --rm \\"
+echo "  --memory=4g \\"
+echo "  --cpus=2 \\"
+echo "  --memory-swap=4g \\"
 echo "  -v \"$STORAGE_DIR\":/home/node/.local/share/opencode \\"
 echo "  -v \"$CONFIG_DIR\":/home/node/.config/opencode \\"
 echo "  -v \"$RUSTUP_DIR\":/home/node/.rustup \\"
 echo "  -v \"$CARGO_DIR\":/home/node/.cargo \\"
-echo "  -v \"$APP\":/app/ \\"
+echo "  -v \"$APP\":/home/node/app/ \\"
 echo "  \"$IMAGE_NAME\""
-echo
-echo "# Tip: add extra docker flags on the line above the image name."
