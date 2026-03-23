@@ -7,11 +7,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /home/node/app
 
-# opencode state
+# opencode data
 RUN mkdir -p /home/node/.local/share/opencode /home/node/.config/opencode && \
   chown -R node:node /home/node/.local /home/node/.config/opencode
 
-# rust state
+# rust data
 RUN mkdir -p /home/node/.cargo /home/node/.rustup && \
   chown -R node:node /home/node/.cargo /home/node/.rustup
 
