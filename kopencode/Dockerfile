@@ -7,6 +7,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /home/node/app
 
+# weird behaviour was observed terminal formatting related if followings lines are not present
+# opencode data
+RUN mkdir -p /home/node/.local/share/opencode /home/node/.config/opencode && \
+  chown -R node:node /home/node/.local /home/node/.config/opencode
+
+# rust data
+RUN mkdir -p /home/node/.cargo /home/node/.rustup && \
+  chown -R node:node /home/node/.cargo /home/node/.rustup
+
 USER node
 
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
