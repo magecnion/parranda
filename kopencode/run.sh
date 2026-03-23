@@ -7,13 +7,18 @@ IMAGE_NAME="kopencode:latest"
 STORAGE_DIR="$OPENCODE_HOME_DIR/.local/share/opencode"
 STATE_DIR="$OPENCODE_HOME_DIR/.local/state/opencode"
 CONFIG_DIR="$OPENCODE_HOME_DIR/.config/opencode"
-RUSTUP_DIR="$OPENCODE_HOME_DIR/.rustup"
-CARGO_DIR="$OPENCODE_HOME_DIR/.cargo"
+# RUSTUP_DIR="$OPENCODE_HOME_DIR/.rustup"
+# CARGO_DIR="$OPENCODE_HOME_DIR/.cargo"
 
 if [ -z "$1" ]; then
     echo "Usage: $0 <path-to-app>"
     exit 1
 fi
+
+mkdir -p \
+  "$STORAGE_DIR" \
+  "$STATE_DIR" \
+  "$CONFIG_DIR"
 
 APP=$(realpath "$1")
 
