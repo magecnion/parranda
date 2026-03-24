@@ -6,7 +6,7 @@ base:
 
 opencode: base
 	@echo "Building opencode image"
-	docker build --build-arg CACHE_BUST=$$(date +%s) --progress=plain -t kopencode -f kopencode/Dockerfile kopencode
+	docker build --build-arg CACHE_BUST=$$(date +%s) --progress=plain -t opencode -f opencode/Dockerfile opencode
 
 claudecode: base
 	@echo "Building claudecode image"

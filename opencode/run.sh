@@ -3,7 +3,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OPENCODE_HOME_DIR="${OPENCODE_HOME_DIR:-$SCRIPT_DIR/node}"
 
-IMAGE_NAME="kopencode:latest"
+IMAGE_NAME="opencode:latest"
 STORAGE_DIR="$OPENCODE_HOME_DIR/.local/share/opencode"
 STATE_DIR="$OPENCODE_HOME_DIR/.local/state/opencode"
 CONFIG_DIR="$OPENCODE_HOME_DIR/.config/opencode"

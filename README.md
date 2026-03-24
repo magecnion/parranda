@@ -8,7 +8,7 @@ This approach was inspired by community discussions on running OpenCode in isola
 
 Inspired by the Canary Islands tradition of people gathering to create music together. This repository is a parranda of AI agents and tools collaborating toward shared tasks.
 
-## kopencode
+## opencode
 
 Dockerized environment for `opencode` with persistent state for Opencode and related tools that it needs (like Rust)
 
@@ -16,9 +16,9 @@ Dockerized environment for `opencode` with persistent state for Opencode and rel
 Run from the project root:
 ```sh
 # Build image
-docker build -t kopencode kopencode
+docker build -t opencode opencode
 # Update opencode (force rebuild)
-docker build --build-arg CACHE_BUST=$(date +%s) -t kopencode kopencode
+docker build --build-arg CACHE_BUST=$(date +%s) -t opencode opencode
 ```
 
 ### Run
@@ -27,15 +27,15 @@ Use the helper script to generate the `docker run` command with necessary volume
 
 **Arguments**:
 - `path/to/project`: The project directory to work on.
-- `OPENCODE_HOME_DIR` (Optional): Host directory for persistent state (defaults to `./kopencode/node`).
+- `OPENCODE_HOME_DIR` (Optional): Host directory for persistent state (defaults to `./opencode/node`).
 
 **Examples**:
 
 ```sh
 # Generate command
-./kopencode/print_docker_run.sh /path/to/project
+./opencode/print_docker_run.sh /path/to/project
 # Run directly
-$(./kopencode/print_docker_run.sh /path/to/project)
+$(./opencode/print_docker_run.sh /path/to/project)
 # Run with custom state directory
-OPENCODE_HOME_DIR=/tmp/state ./kopencode/print_docker_run.sh /path/to/project
+OPENCODE_HOME_DIR=/tmp/state ./opencode/print_docker_run.sh /path/to/project
 ```
