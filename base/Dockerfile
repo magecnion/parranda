@@ -1,6 +1,6 @@
 FROM node:23-slim
 
-ARG LOCAL_TOOLS="git curl nano make zip unzip less gh"
+ARG LOCAL_TOOLS="git curl nano make zip unzip less gh jq"
 RUN apt-get update && apt-get install -y --no-install-recommends \
   ${LOCAL_TOOLS} ca-certificates gcc libc6-dev && \
   rm -rf /var/lib/apt/lists/*

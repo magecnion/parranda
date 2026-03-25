@@ -21,6 +21,8 @@ APP=$(realpath "$1")
 exec docker run -it --rm \
   --memory=4g \
   --cpus=2 \
+  -e TERM="${TERM:-xterm-256color}" \
+  -e COLORTERM="${COLORTERM}" \
   -v "$CONFIG_DIR:/home/node/.claude" \
   -v "$CONFIG_FILE:/home/node/.claude.json" \
   -v "$APP:/home/node/app/" \
