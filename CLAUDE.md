@@ -2,61 +2,44 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Repository Purpose
+## Project Overview
 
-Parranda builds and runs isolated Docker environments for AI agent CLIs. The core philosophy is **isolation mode**: agents run inside containers where only `/home/node/app/` is mounted from the host, ensuring safety and reproducibility.
-
-Image hierarchy:
-```
-node:23-slim → agent-base (base/Dockerfile) → claudecode or opencode
-```
+Parranda is a monorepo for running AI coding agents (Claude Code, OpenCode) in isolated Docker containers. Each agent gets its own image built on a shared base, with persistent state directories mounted from the host.
 
 ## Build Commands
 
-Run from the repository root. Build `base` first — both agent images depend on it.
+All builds use the top-level Makefile from the project root:
 
 ```sh
-make base
-make claudecode
-make opencode
+make base          # Build the shared base image (agent-base)
+make opencode      # Build OpenCode image (depends on base)
+make claudecode    # Build Claude Code image (depends on base)
 ```
 
-- `opencode` always busts cache to pull `opencode-ai@latest`.
-- There is no repo-level package manager workflow; Docker is the only build system.
+Always rebuild `base` first if you change `base/Dockerfile`, since both agent images inherit from `agent-base`.
 
-## Run Commands
+## Running Agents
+
+Each agent has a `run.sh` script that generates and executes the `docker run` command:
 
 ```sh
-./claudecode/run.sh /path/to/project
-./opencode/run.sh /path/to/project
+./claudecode/run.sh /path/to/project          # Run Claude Code against a project
+./opencode/run.sh /path/to/project            # Run OpenCode against a project
+CLAUDECODE_HOME_DIR=/custom/dir ./claudecode/run.sh /path/to/project  # Custom state dir
+OPENCODE_HOME_DIR=/custom/dir ./opencode/run.sh /path/to/project
 ```
 
-Both scripts resolve the target path with `realpath`, create required host-side state directories, then run `docker run -it --rm` with the project mounted at `/home/node/app/` and limits of `--memory=4g --cpus=2`.
+Containers run with `--memory=4g --cpus=2` limits, as `node` user (non-root, no sudo).
 
-Persistent state defaults:
-- Claude Code: `claudecode/node/.claude/` and `claudecode/node/.claude.json`
-- OpenCode: `opencode/node/.local/` and `opencode/node/.config/opencode/`
+## Architecture
 
-Override with `CLAUDECODE_HOME_DIR` or `OPENCODE_HOME_DIR`.
+- **`base/`** - Shared Dockerfile: Node.js 23-slim + system tools + Rust toolchain. All agent images extend this.
+- **`claudecode/`** - Claude Code agent. Dockerfile installs `@anthropic-ai/claude-code` globally. Persistent state lives in `claudecode/node/.claude/` (mounted to `/home/node/.claude` in container).
+- **`opencode/`** - OpenCode agent. Dockerfile installs `opencode-ai` globally. Persistent state split across `.local/share/opencode`, `.local/state/opencode`, and `.config/opencode` (all under `opencode/node/`).
+- **`audio/`** - Linux audio debugging toolkit: `collect_diagnostics.sh` gathers MIDI/PipeWire/JACK state on the host for analysis inside a container.
 
-## Validation
+## Key Constraints
 
-There is no automated test suite, linter, or formatter config in this repo. Validate changes with the narrowest applicable check:
-
-```sh
-bash -n claudecode/run.sh        # shell syntax check
-bash -n opencode/run.sh
-docker build --progress=plain -t agent-base -f base/Dockerfile base
-docker build --progress=plain -t claudecode -f claudecode/Dockerfile claudecode
-docker build --build-arg CACHE_BUST=$(date +%s) --progress=plain -t opencode -f opencode/Dockerfile opencode
-```
-
-Do not invent `make lint` or test commands that don't exist.
-
-## Code Conventions
-
-**Shell scripts**: `#!/bin/bash`, quote variable expansions, use `$(...)` not backticks, validate required args early with `exit 1`, use `exec` for the final long-running process, keep env defaults explicit with `${VAR:-default}`.
-
-**Dockerfiles**: single-stage, minimal. Shared tools go only in `base/Dockerfile`; agent-specific installs go in the agent's Dockerfile. Always remove apt lists after install. Preserve the non-root `node` user.
-
-**Dependencies**: add new CLI tools to `base/Dockerfile`; add agent-specific npm packages to the relevant agent Dockerfile. Do not install tools at runtime inside scripts.
+- Only `/home/node/app/` is shared with the host; everything else in the container is ephemeral.
+- To add a system tool: modify `base/Dockerfile` (shared) or the agent-specific Dockerfile, then rebuild.
+- Agent config/state directories (e.g., `claudecode/node/.claude/`, `opencode/node/.config/opencode/`) are committed to the repo for persistence across container runs.
