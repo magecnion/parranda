@@ -6,6 +6,7 @@ CLAUDECODE_HOME_DIR="${CLAUDECODE_HOME_DIR:-$SCRIPT_DIR/node}"
 IMAGE_NAME="claudecode:latest"
 CONFIG_DIR="$CLAUDECODE_HOME_DIR/.claude"
 CONFIG_FILE="$CLAUDECODE_HOME_DIR/.claude.json"
+SKILLS_DIR="$SCRIPT_DIR/../skills"
 
 if [ -z "$1" ]; then
     echo "Usage: $0 <path-to-app>"
@@ -26,4 +27,5 @@ exec docker run -it --rm \
   -v "$CONFIG_DIR:/home/node/.claude" \
   -v "$CONFIG_FILE:/home/node/.claude.json" \
   -v "$APP:/home/node/app/" \
+  -v "$SKILLS_DIR:/home/node/.claude/skills" \
   "$IMAGE_NAME"

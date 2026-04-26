@@ -10,4 +10,4 @@ opencode: base
 
 claudecode: base
 	@echo "Building claudecode image"
-	docker build --progress=plain -t claudecode -f claudecode/Dockerfile claudecode
+	docker build --build-arg CACHE_BUST=$$(date +%s) --progress=plain -t claudecode -f claudecode/Dockerfile claudecode
