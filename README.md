@@ -38,4 +38,7 @@ Use the helper script to generate the `docker run` command with necessary volume
 $(./opencode/print_docker_run.sh /path/to/project)
 # Run with custom state directory
 OPENCODE_HOME_DIR=/tmp/state ./opencode/print_docker_run.sh /path/to/project
+# Run with Makefile
+# $PAR is parranda directory, run the following command from working directory
+make -C "$PAR" run-opencode ORIGIN_PWD="$PWD"
 ```
