@@ -1,4 +1,4 @@
-FROM node:23-slim
+FROM node:24-slim
 
 ARG LOCAL_TOOLS="git curl nano make zip unzip less gh jq"
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -7,16 +7,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /home/node/app
 
-# rust data
-RUN mkdir -p /home/node/.cargo /home/node/.rustup && \
-  chown -R node:node /home/node/.cargo /home/node/.rustup
-
-USER node
+# rust / npm / pnpm data
+RUN mkdir -p \
+  /home/node/.cargo \
+  /home/node/.rustup \
+  /home/node/.npm-global \
+  /home/node/.local/share/pnpm/bin && \
+  chown -R node:node \
+  /home/node/.cargo \
+  /home/node/.rustup \
+  /home/node/.npm-global \
+  /home/node/.local
 
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 ENV CARGO_HOME=/home/node/.cargo
 ENV RUSTUP_HOME=/home/node/.rustup
-ENV PATH=$NPM_CONFIG_PREFIX/bin:$CARGO_HOME/bin:$PATH
+
+# Seguridad npm/pnpm
+ENV NPM_CONFIG_IGNORE_SCRIPTS=true
+ENV PNPM_HOME=/home/node/.local/share/pnpm
+ENV PATH=$PNPM_HOME/bin:$PNPM_HOME:$NPM_CONFIG_PREFIX/bin:$CARGO_HOME/bin:$PATH
+
+RUN corepack enable && corepack prepare pnpm@11 --activate
+
+USER node
 
 # rust installation
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable

@@ -1,3 +1,10 @@
-opencode/node
+opencode/node/*
+!opencode/node/.config/
+opencode/node/.config/*
+!opencode/node/.config/opencode/
+opencode/node/.config/opencode/*
+!opencode/node/.config/opencode/AGENTS.md
+!opencode/node/.config/opencode/skills/
+!opencode/node/.config/opencode/skills/**
 claudecode/node
 audio
