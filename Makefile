@@ -15,5 +15,5 @@ claudecode: base
 run-opencode:
 	./opencode/run.sh $(ORIGIN_PWD)
 
-run-opencode-wrapped:
-	./opencode/run-wrapped.sh $(ORIGIN_PWD)
+run-wrapped:
+	./wrapped/run.sh $(ORIGIN_PWD)

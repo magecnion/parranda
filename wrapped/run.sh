@@ -32,10 +32,12 @@ exec bwrap \
   --bind "$PROJECT" /working-dic \
   --bind "$SANDBOX_HOME" /home/sandbox \
   --ro-bind "$HOME/.opencode/bin" /home/sandbox/.opencode/bin \
+  --ro-bind "$OF_ROOT" /home/sandbox/openFrameworks \
   \
   --chdir /working-dic \
   --setenv HOME /home/sandbox \
   --setenv USER sandbox \
+  --setenv OF_ROOT /home/sandbox/openFrameworks \
   --setenv PATH /home/sandbox/.opencode/bin:/usr/local/bin:/usr/bin:/bin \
   \
   --setenv TERM "$TERM" \
