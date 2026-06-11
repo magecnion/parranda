@@ -10,7 +10,6 @@ exec bwrap \
   --unshare-all \
   --share-net \
   --die-with-parent \
-  --new-session \
   \
   --ro-bind /usr /usr \
   --ro-bind /bin /bin \
