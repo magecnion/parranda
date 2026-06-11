@@ -31,6 +31,7 @@ exec bwrap \
   --bind "$PROJECT" /working-dic \
   --bind "$SANDBOX_HOME" /home/sandbox \
   --ro-bind "$HOME/.opencode/bin" /home/sandbox/.opencode/bin \
+  --ro-bind "$OC_SKILLS" /home/sandbox/.config/opencode/skills \
   --ro-bind "$OF_ROOT" /home/sandbox/openFrameworks \
   \
   --chdir /working-dic \
