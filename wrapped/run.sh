@@ -35,6 +35,8 @@ exec bwrap \
   --ro-bind "$HOME/.opencode/bin" /home/sandbox/.opencode/bin \
   --ro-bind "$NODE_BIN_DIR" /home/sandbox/.local/node-bin \
   --ro-bind "$PNPM_HOME" /home/sandbox/.local/share/pnpm \
+  --ro-bind "$PROJECT/wrapped/AGENTS.md" /home/sandbox/.config/opencode/AGENTS.md \
+  --ro-bind "$PROJECT/wrapped/opencode.jsonc" /home/sandbox/.config/opencode/opencode.jsonc \
   --ro-bind "$OC_SKILLS" /home/sandbox/.config/opencode/skills \
   --ro-bind "$OC_AGENTS" /home/sandbox/.config/opencode/agents \
   --ro-bind "$OC_COMMANDS" /home/sandbox/.config/opencode/commands \

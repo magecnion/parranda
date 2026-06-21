@@ -1,1 +1,5 @@
-/home/carla/.local/share/opencode-sandbox/home/.config/opencode/opencode.jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": "deny",
+  "default_agent": "plan"
+}
