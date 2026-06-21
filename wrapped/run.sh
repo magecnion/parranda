@@ -36,6 +36,8 @@ exec bwrap \
   --ro-bind "$NODE_BIN_DIR" /home/sandbox/.local/node-bin \
   --ro-bind "$PNPM_HOME" /home/sandbox/.local/share/pnpm \
   --ro-bind "$OC_SKILLS" /home/sandbox/.config/opencode/skills \
+  --ro-bind "$OC_AGENTS" /home/sandbox/.config/opencode/agents \
+  --ro-bind "$OC_COMMANDS" /home/sandbox/.config/opencode/commands \
   --ro-bind "$OF_ROOT" /home/sandbox/openFrameworks \
   \
   --chdir /working-dic \
