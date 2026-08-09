@@ -1,44 +1,41 @@
 # Parranda
 
-`Parranda` is a repository that hosts various agents and agent-related tools, such as skills.
-The core philosophy of this project is to run agents in **isolation mode** to ensure safety and reproducibility.
+`Parranda` hosts agents and agent-related tools, such as skills and commands.
 
-This approach was inspired by community discussions on running OpenCode in isolated environments:
-[Reddit Comment](https://www.reddit.com/r/opencodeCLI/comments/1qbtyql/comment/nzd7mmt/)
+The core philosophy of this project is to run agents in **isolation mode** for safety and reproducibility.
 
-Inspired by the Canary Islands tradition of people gathering to create music together. This repository is a parranda of AI agents and tools collaborating toward shared tasks.
+This approach was inspired by community discussions about running OpenCode in isolated environments:
+[Reddit comment](https://www.reddit.com/r/opencodeCLI/comments/1qbtyql/comment/nzd7mmt/)
 
-## opencode
+The name is inspired by the Canary Islands tradition of people gathering to create music together. In that spirit, this repository is a "parranda" of AI agents and tools collaborating toward the common good.
 
-Dockerized environment for `opencode` with persistent state for Opencode and related tools that it needs (like Rust)
+## OpenCode Sandboxed via Docker (Legacy)
 
-### Build
+Dockerized environment for `opencode` with persistent OpenCode state. Skills and `AGENTS.md` are also tracked in Git; see `.gitignore`.
+
+Both skills and `AGENTS.md` are general-purpose: any OpenCode session loads `AGENTS.md` and can use the configured skills.
+
+
+### Build The Image
+
 Run from the project root:
+
 ```sh
-# Build image
-docker build -t opencode opencode
-# Update opencode (force rebuild)
-docker build --build-arg CACHE_BUST=$(date +%s) -t opencode opencode
+make opencode
 ```
 
 ### Run
 
-Use the helper script to generate the `docker run` command with necessary volume mounts.
+```sh
+# Move to the root of the project you want to work on.
+cd <my-awesome-project>
 
-**Arguments**:
-- `path/to/project`: The project directory to work on.
-- `OPENCODE_HOME_DIR` (Optional): Host directory for persistent state (defaults to `./opencode/node`).
+# Run opencode by referencing the location of the Parranda project.
+make -C "<your-parranda-project-directory>" run-opencode PROJECT_PATH="$PWD"
+```
 
-**Examples**:
+> NOTE: Unless you set OPENCODE_HOME_DIR, the default location is the directory where /opencode/run.sh is located. All persisted OpenCode data will be stored there.
 
 ```sh
-# Generate command
-./opencode/print_docker_run.sh /path/to/project
-# Run directly
-$(./opencode/print_docker_run.sh /path/to/project)
-# Run with custom state directory
-OPENCODE_HOME_DIR=/tmp/state ./opencode/print_docker_run.sh /path/to/project
-# Run with Makefile
-# $PAR is parranda directory, run the following command from working directory
-make -C "$PAR" run-opencode ORIGIN_PWD="$PWD"
+OPENCODE_HOME_DIR="<host-location>" make -C "<your-parranda-project-directory>" run-opencode PROJECT_PATH="$PWD"
 ```
