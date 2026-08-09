@@ -6,5 +6,5 @@ sandbox/docker/opencode/node/.config/opencode/*
 !sandbox/docker/opencode/node/.config/opencode/AGENTS.md
 !sandbox/docker/opencode/node/.config/opencode/skills/
 !sandbox/docker/opencode/node/.config/opencode/skills/**
-claudecode/node
+sandbox/docker/claudecode/node
 audio

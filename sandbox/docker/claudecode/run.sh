@@ -1,11 +1,11 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CLAUDECODE_HOME_DIR="${CLAUDECODE_HOME_DIR:-$SCRIPT_DIR/node}"
+HOME_DIR="${CLAUDECODE_HOME_DIR:-$SCRIPT_DIR/node}"
 
 IMAGE_NAME="claudecode:latest"
-CONFIG_DIR="$CLAUDECODE_HOME_DIR/.claude"
-CONFIG_FILE="$CLAUDECODE_HOME_DIR/.claude.json"
+CONFIG_DIR="$HOME_DIR/.claude"
+CONFIG_FILE="$HOME_DIR/.claude.json"
 SKILLS_DIR="$SCRIPT_DIR/../skills"
 
 if [ -z "$1" ]; then
