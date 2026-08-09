@@ -13,7 +13,7 @@ claudecode: base
 	docker build --build-arg CACHE_BUST=$$(date +%s) --progress=plain -t claudecode -f claudecode/Dockerfile claudecode
 
 run-opencode:
-	./opencode/run.sh $(ORIGIN_PWD)
+	./opencode/run.sh $(PROJECT_PATH)
 
 run-wrapped:
 	./wrapped/run.sh $(ORIGIN_PWD)
