@@ -21,7 +21,7 @@ Both skills and `AGENTS.md` are general-purpose: any OpenCode session loads `AGE
 Run from the project root:
 
 ```sh
-make opencode
+make -C "./sandbox/docker" opencode
 ```
 
 ### Run
@@ -31,10 +31,10 @@ make opencode
 cd <my-awesome-project>
 
 # Run opencode by referencing the location of the Parranda project.
-make -C "<your-parranda-project-directory>" run-opencode PROJECT_PATH="$PWD"
+make -C "<your-parranda-project-directory>/sandbox/docker" run-opencode PROJECT_PATH="$PWD"
 ```
 
-> NOTE: Unless you set OPENCODE_HOME_DIR, the default location is the directory where /opencode/run.sh is located. All persisted OpenCode data will be stored there.
+**NOTE**: Unless you set `OPENCODE_HOME_DIR`, the default location is the directory where `/opencode/run.sh` is located. All persisted OpenCode data will be stored there:
 
 ```sh
 OPENCODE_HOME_DIR="<host-location>" make -C "<your-parranda-project-directory>" run-opencode PROJECT_PATH="$PWD"
