@@ -4,6 +4,7 @@ set -euo pipefail
 PROJECT=$(realpath "$1")
 
 # OpenCode
+OC_HOME="$HOME/.opencode"
 OC_SKILLS=$PARRANDA/skills
 OC_AGENTS=$PARRANDA/agents
 OC_COMMANDS=$PARRANDA/commands
@@ -45,24 +46,24 @@ exec bwrap \
   --tmpfs /tmp \
   --tmpfs /run \
   \
-  --bind "$PROJECT" /working-dic \
+  --bind "$PROJECT" /working-dir \
   --bind "$OC_SANDBOX_HOME" /home/sandbox \
   \
-  --ro-bind "$HOME/.opencode/bin" /home/sandbox/.opencode/bin \
-  --ro-bind "$CARGO_HOME" /home/sandbox/.cargo \
-  --ro-bind "$RUSTUP_HOME" /home/sandbox/.rustup \
-  --ro-bind "$PNPM_HOME" /home/sandbox/.local/share/pnpm \
-  --ro-bind "$NODE_HOME" /home/sandbox/.local/node \
-  --ro-bind-try "$PROJECT/wrapped/AGENTS.md" /home/sandbox/.config/opencode/AGENTS.md \
-  --ro-bind-try "$PROJECT/wrapped/opencode.jsonc" /home/sandbox/.config/opencode/opencode.jsonc \
-  \
+  --ro-bind "$OC_HOME/bin" /home/sandbox/.opencode/bin \
+  --ro-bind "$PARRANDA/wrapped/AGENTS.md" /home/sandbox/.config/opencode/AGENTS.md \
+  --ro-bind "$PARRANDA/wrapped/opencode.jsonc" /home/sandbox/.config/opencode/opencode.jsonc \
   --ro-bind "$OC_SKILLS" /home/sandbox/.config/opencode/skills \
   --ro-bind "$OC_AGENTS" /home/sandbox/.config/opencode/agents \
   --ro-bind "$OC_COMMANDS" /home/sandbox/.config/opencode/commands \
   \
+  --ro-bind "$CARGO_HOME" /home/sandbox/.cargo \
+  --ro-bind "$RUSTUP_HOME" /home/sandbox/.rustup \
+  --ro-bind "$PNPM_HOME" /home/sandbox/.local/share/pnpm \
+  --ro-bind "$NODE_HOME" /home/sandbox/.local/node \
+  \
   --ro-bind "$OPEN_FRAMEWORKS" /home/sandbox/openFrameworks \
   \
-  --chdir /working-dic \
+  --chdir /working-dir \
   --setenv HOME /home/sandbox \
   --setenv USER sandbox \
   --setenv OPEN_FRAMEWORKS /home/sandbox/openFrameworks \
