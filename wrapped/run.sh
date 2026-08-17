@@ -12,7 +12,7 @@ OC_COMMANDS=$PARRANDA/commands
 OC_SANDBOX_HOME="$HOME/.local/share/opencode/sandbox/home"
 OC_USER_DATA="$OC_SANDBOX_HOME/.local/share/opencode"
 
-# projects specific (this should be provided on the run) TODO
+# projects specific (this should be provided on the run) TODO, de hecho antes era OF_ROOT
 OPEN_FRAMEWORKS=/home/carla/dev/magecnion/oss/openFrameworks
 
 # node
@@ -66,11 +66,9 @@ exec bwrap \
   --ro-bind "$OPEN_FRAMEWORKS" "$SANDBOX_HOME/openFrameworks" \
   \
   --chdir /working-dir \
-  --setenv HOME /home/sandbox \
+  --setenv HOME "$SANDBOX_HOME" \
   --setenv USER sandbox \
   --setenv OPEN_FRAMEWORKS "$SANDBOX_HOME/openFrameworks" \
-  --setenv CARGO_HOME "$SANDBOX_HOME/.cargo" \
-  --setenv RUSTUP_HOME "$SANDBOX_HOME/.rustup" \
   --setenv PATH /usr/local/bin:/usr/bin:/bin:/home/sandbox/.cargo/bin:/home/sandbox/.local/node/bin:/home/sandbox/.local/share/pnpm:/home/sandbox/.opencode/bin \
   \
   --setenv TERM "$TERM" \
