@@ -8,12 +8,20 @@ SANDBOX_HOME="/home/sandbox"
 OC_HOME="$HOME/.opencode"
 OC_SKILLS=$PARRANDA/skills
 OC_AGENTS=$PARRANDA/agents
+OC_PLUGINS=$PARRANDA/plugins
 OC_COMMANDS=$PARRANDA/commands
 OC_SANDBOX_HOME="$HOME/.local/share/opencode/sandbox/home"
 OC_USER_DATA="$OC_SANDBOX_HOME/.local/share/opencode"
 
-# projects specific (this should be provided on the run) TODO, de hecho antes era OF_ROOT
-OPEN_FRAMEWORKS=/home/carla/dev/magecnion/oss/openFrameworks
+# projects specific: openFrameworks
+OPEN_FRAMEWORKS=${2:-}
+OPEN_FRAMEWORKS_ARGS=()
+
+if [[ -n "$OPEN_FRAMEWORKS" ]]; then
+  OPEN_FRAMEWORKS_ARGS=(
+    --ro-bind "$OPEN_FRAMEWORKS" "$SANDBOX_HOME/openFrameworks"
+  )
+fi
 
 # node
 PNPM_HOME="$HOME/.local/share/pnpm"
@@ -55,6 +63,7 @@ exec bwrap \
   --ro-bind "$PARRANDA/wrapped/AGENTS.md" "$SANDBOX_HOME/.config/opencode/AGENTS.md" \
   --ro-bind "$PARRANDA/wrapped/opencode.jsonc" "$SANDBOX_HOME/.config/opencode/opencode.jsonc" \
   --ro-bind "$OC_SKILLS" "$SANDBOX_HOME/.config/opencode/skills" \
+  --ro-bind "$OC_PLUGINS" "$SANDBOX_HOME/.config/opencode/plugins" \
   --ro-bind "$OC_AGENTS" "$SANDBOX_HOME/.config/opencode/agents" \
   --ro-bind "$OC_COMMANDS" "$SANDBOX_HOME/.config/opencode/commands" \
   \
@@ -63,13 +72,13 @@ exec bwrap \
   --ro-bind "$PNPM_HOME" "$SANDBOX_HOME/.local/share/pnpm" \
   --ro-bind "$NODE_HOME" "$SANDBOX_HOME/.local/node" \
   \
-  --ro-bind "$OPEN_FRAMEWORKS" "$SANDBOX_HOME/openFrameworks" \
+  "${OPEN_FRAMEWORKS_ARGS[@]}" \
   \
   --chdir /working-dir \
   --setenv HOME "$SANDBOX_HOME" \
   --setenv USER sandbox \
-  --setenv OPEN_FRAMEWORKS "$SANDBOX_HOME/openFrameworks" \
-  --setenv PATH /usr/local/bin:/usr/bin:/bin:/home/sandbox/.cargo/bin:/home/sandbox/.local/node/bin:/home/sandbox/.local/share/pnpm:/home/sandbox/.opencode/bin \
+  --setenv OF_ROOT "${OPEN_FRAMEWORKS:+$SANDBOX_HOME/openFrameworks}" \
+  --setenv PATH /usr/local/bin:/usr/bin:/bin:/home/sandbox/.cargo/bin:/home/sandbox/.local/node/bin:/home/sandbox/.local/share/pnpm:/home/sandbox/.local/share/pnpm/bin:/home/sandbox/.opencode/bin \
   \
   --setenv TERM "$TERM" \
   --setenv COLORTERM "$COLORTERM" \
