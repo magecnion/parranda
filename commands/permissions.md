@@ -1,21 +1,22 @@
 ---
 description: Generate or update the OpenCode permissions inventory
 agent: build
-model: openai/gpt-5.6-terra
 subtask: false
 ---
 
-1. Run `opencode agent list` and use its output as the source of truth.
+1. Run `opencode debug agents` and use its output as the source of truth.
 2. Create or replace `.opencode/.permissions.md`. Do not modify any configuration or agent definition files.
 3. Include every listed agent, including internal agents.
 4. At the beginning of the document, add an index listing every agent with an anchor link to that agent's permissions section.
 5. For each agent, preserve the rules exactly in the order received and number them starting from `#01`.
 6. OpenCode evaluates rules in order and uses the LAST rule whose permission and pattern both match the concrete input.
-7. Resolve precedence using wildcard match-set overlap, not pattern equality or assumed specificity:
+7. Resolve precedence using wildcard match-set overlap across the complete `(permission, pattern)` pair, not permission equality, pattern equality, or assumed specificity:
    - `*` matches zero or more characters.
    - `?` matches exactly one character.
+   - Two rules overlap only when both their permission match sets and their pattern match sets overlap. For example, `*: *` overlaps every rule with a non-empty permission and pattern match set.
    - A later rule can override all or only part of an earlier rule's matching inputs.
-   - Do not assume two different patterns are disjoint. Determine whether their possible matching inputs overlap.
+   - Do not assume two different permissions or patterns are disjoint. Determine whether their possible matching inputs overlap.
+   - Because the last matching rule wins, a later overlapping rule overrides an earlier rule for the inputs in their overlap, even when both rules have the same action.
 8. In `Applies`, show:
    - `Full` when the rule is the winning rule for every input matched by its permission and pattern.
    - `Partial` when the rule wins for some matching inputs, but one or more later rules win for other matching inputs.
@@ -25,6 +26,8 @@ subtask: false
 10. In `Rule`, display `allow`, `ask`, or `deny`.
 11. In `Overrides`, reference every earlier rule whose permission and pattern overlap with the current rule, whether the overlap is partial or complete. Use compact ranges where possible, for example `#01–#15`.
 12. In `Overridden by`, reference every later rule whose permission and pattern overlap with the current rule, whether the overlap is partial or complete, for example `#16`.
+    - `Overrides` and `Overridden by` indicate an overlap relationship only; they do not mean the referenced rule wins for every input matched by the current rule.
+    - Use `Applies` to determine scope: `Partial` means the current rule still wins for at least one matching input, while `No` means it never wins.
 13. Leave override cells empty when there is no overlap relationship.
 14. For example, given these ordered rules:
     - `read: *` with `allow`
@@ -45,7 +48,7 @@ subtask: false
 
 Restrictions:
 
-- Use only the output of `opencode agent list` as the source of truth.
+- Use only the output of `opencode debug agents` as the source of truth.
 - Do not search for, read, or inspect other permission-related files.
 - Do not access `.opencode/` except to create or replace the permitted output files.
-- Only create or replace `.opencode/.permissions` and `.opencode/.permissions.md`.
+- Only create or replace `.opencode/.permissions.md`.
