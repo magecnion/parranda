@@ -15,18 +15,26 @@
     "read": {
       ".secrets/**": "deny",
       ".env/**": "deny",
+      "todo": "deny",
+      "**/.env*": "deny",
     },
     "grep": {
       ".secrets/**": "deny",
       ".env/**": "deny",
+      "**/.env*": "deny",
+      "todo": "deny",
     },
     "list": {
+      "**/.env*": "deny",
       ".secrets/**": "deny",
       ".env/**": "deny",
+      "todo": "deny",
     },
     "blob": {
+      "**/.env*": "deny",
       ".secrets/**": "deny",
       ".env/**": "deny",
+      "todo": "deny",
     },
   },
   "mcp": {
