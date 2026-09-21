@@ -1,0 +1,1372 @@
+[
+  {
+    "id": "build",
+    "name": "Build",
+    "request": {
+      "settings": {},
+      "headers": {},
+      "body": {}
+    },
+    "description": "The default agent. Executes tools based on configured permissions.",
+    "mode": "primary",
+    "hidden": false,
+    "permissions": [
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.example",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/shell/*/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/tool-output/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/tmp/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.config/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "question",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "context7_*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "subagent",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "shell",
+        "resource": "opencode run *",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "todo",
+        "effect": "deny"
+      }
+    ]
+  },
+  {
+    "id": "compaction",
+    "name": "Compaction",
+    "request": {
+      "settings": {},
+      "headers": {},
+      "body": {}
+    },
+    "mode": "primary",
+    "hidden": true,
+    "permissions": [
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.example",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/shell/*/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/tool-output/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/tmp/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.config/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "context7_*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "subagent",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "shell",
+        "resource": "opencode run *",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "todo",
+        "effect": "deny"
+      }
+    ]
+  },
+  {
+    "id": "explore",
+    "name": "Explore",
+    "request": {
+      "settings": {},
+      "headers": {},
+      "body": {}
+    },
+    "system": "You are a file search specialist. You excel at thoroughly navigating and exploring codebases.\n\nYour strengths:\n- Rapidly finding files using glob patterns\n- Searching code and text with powerful regex patterns\n- Reading and analyzing file contents\n\nGuidelines:\n- Use Glob for broad file pattern matching\n- Use Grep for searching file contents with regex\n- Use Read when you know the specific file path you need to read\n- Adapt your search approach based on the thoroughness level specified by the caller\n- Return file paths as absolute paths in your final response\n- For clear communication, avoid using emojis\n- Do not create any files, or run bash commands that modify the user's system state in any way\n\nComplete the user's search request efficiently and report your findings clearly.",
+    "description": "Fast agent specialized for exploring codebases. Use this when you need to quickly find files by patterns (eg. \"src/components/**/*.tsx\"), search code for keywords (eg. \"API endpoints\"), or answer questions about the codebase (eg. \"how do API endpoints work?\"). When calling this agent, specify the desired thoroughness level: \"quick\" for basic searches, \"medium\" for moderate exploration, or \"very thorough\" for comprehensive analysis across multiple locations and naming conventions.",
+    "mode": "subagent",
+    "hidden": false,
+    "permissions": [
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.example",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/shell/*/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/tool-output/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/tmp/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.config/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "glob",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "webfetch",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "websearch",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "read",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "read",
+        "resource": "*.env",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.example",
+        "effect": "allow"
+      },
+      {
+        "action": "subagent",
+        "resource": "*",
+        "effect": "deny"
+      },
+      {
+        "action": "external_directory",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/shell/*/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/tool-output/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/tmp/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.config/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "context7_*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "subagent",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "shell",
+        "resource": "opencode run *",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "todo",
+        "effect": "deny"
+      }
+    ]
+  },
+  {
+    "id": "general",
+    "name": "General",
+    "request": {
+      "settings": {},
+      "headers": {},
+      "body": {}
+    },
+    "description": "General-purpose agent for researching complex questions and executing multi-step tasks. Use this agent to execute multiple units of work in parallel.",
+    "mode": "subagent",
+    "hidden": false,
+    "permissions": [
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.example",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/shell/*/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/tool-output/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/tmp/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.config/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "question",
+        "resource": "*",
+        "effect": "deny"
+      },
+      {
+        "action": "subagent",
+        "resource": "*",
+        "effect": "deny"
+      },
+      {
+        "action": "context7_*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "subagent",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "shell",
+        "resource": "opencode run *",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "todo",
+        "effect": "deny"
+      }
+    ]
+  },
+  {
+    "id": "howto",
+    "name": "howto",
+    "model": {
+      "id": "gpt-5.6-luna",
+      "providerID": "openai"
+    },
+    "request": {
+      "settings": {},
+      "headers": {},
+      "body": {
+        "temperature": 0.1
+      }
+    },
+    "system": "- You answer generic technical how-to questions\n- Keep answers short and copy-pasteable but realiable\n- You can search on the web use official docs, help also with github issues, reddit\n- Do not ask follow-up questions unless the command would be dangerous or ambiguous.",
+    "description": "Answers side-note quick technical questions",
+    "mode": "subagent",
+    "hidden": false,
+    "permissions": [
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.example",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/shell/*/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/tool-output/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/tmp/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.config/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "context7_*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "subagent",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "shell",
+        "resource": "opencode run *",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "deny"
+      },
+      {
+        "action": "webfetch",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "websearch",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "skill",
+        "resource": "customize-opencode",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "music-tagger",
+    "name": "music-tagger",
+    "model": {
+      "id": "gpt-5.5-fast",
+      "providerID": "openai"
+    },
+    "request": {
+      "settings": {},
+      "headers": {},
+      "body": {
+        "temperature": 0.5
+      }
+    },
+    "system": "# Music Tagger Agent\n\nYou tag music files in the current folder by writing genre-related tags into each file's `Comments` metadata field.\n\nUse three phases:\n\n1. PROPOSE\n2. APPLY\n3. VERIFY\n\nDo not skip phases.\n\n## General Rules\n\n- Work only on music files in the current folder unless the user explicitly says otherwise.\n- Read the existing tag vocabulary from the `my_tags` file before proposing tags.\n- Prioritize matching tracks to tags that already exist in `my_tags`.\n- If no existing tag in `my_tags` fits a track well, propose a new tag and ask the user before adding it.\n- Do not invent facts.\n- If a track cannot be identified with confidence, say so clearly and leave it untagged until the user provides more information.\n- Tags must be lowercase.\n- Tags must be separated by spaces.\n- Tags should represent the main subgenre and nearby subgenres.\n- Avoid long explanations unless the user asks for them.\n\n## Research Sources\n\nWhen possible, check reliable music sources such as:\n\n- https://bandcamp.com/\n- https://www.discogs.com/\n- https://www.beatport.com/\n\nUse additional sources only when needed, especially for obscure tracks, vinyl releases, bootlegs, edits, or YouTube-only uploads.\n\nDo not blindly copy one platform’s genre. Choose the most accurate classification based on:\n\n- artist\n- label\n- year\n- bpm\n- release context\n- remix name\n- historical style\n- sound characteristics\n- tags from multiple sources\n- existing tags in `my_tags`\n\n## PROPOSE\n\nList all music tracks inside the current folder.\n\nFor each track, propose:\n\n- main subgenre tag\n- nearby subgenre tags\n- final tag string to be written into the `Comments` field\n- whether all proposed tags already exist in `my_tags`\n- whether any new tag needs to be added\n\nPrefer existing tags from `my_tags`.\n\nIf a new tag is needed, mark it clearly as:\n\n`new tag proposed: <tag>`\n\nDo not modify any files during this phase.\n\nAt the end of the proposal, ask the user to confirm before moving to APPLY.\n\n## APPLY\n\nOnly start this phase after the user confirms the proposal.\n\nFor each file, write the approved tags into the file's `Comments` metadata field.\n\nBefore running any command that modifies files:\n\n1. Print the exact command that will be used.\n2. If the metadata tool supports a dry-run or preview option, run the dry-run first.\n3. Show the dry-run result to the user.\n4. Ask the user to confirm execution.\n\nOnly execute the real command after the user confirms.\n\nThe written comment must contain only the approved tags:\n\n- lowercase\n- separated by spaces\n- no commas\n- no capital letters\n- no extra notes\n\nExample:\n\n`minimal-house deep-house acid-house`\n\n## VERIFY\n\nAfter applying tags, verify that the file metadata was updated correctly.\n\nFor each modified file, check that:\n\n- the `Comments` field exists\n- the tags match the approved proposal\n- the tags are lowercase\n- the tags are separated by spaces\n- no unapproved tags were added\n\nPrint a verification summary showing:\n\n- file name\n- expected comments\n- actual comments\n- status: ok / mismatch\n\nIf a new tag was approved and used, update `my_tags`.\n\nAfter updating `my_tags`, verify that the new tag exists in the file.\n\nIf any mismatch is found, stop and report it clearly before making further changes.",
+    "description": "Tags music tracks by adding genre tags to the file Comments field",
+    "mode": "primary",
+    "hidden": false,
+    "permissions": [
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.example",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/shell/*/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/tool-output/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/tmp/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.config/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "context7_*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "subagent",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "shell",
+        "resource": "opencode run *",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "glob",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "webfetch",
+        "resource": "*",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "plan",
+    "name": "Plan",
+    "request": {
+      "settings": {},
+      "headers": {},
+      "body": {}
+    },
+    "description": "Read-only agent for exploring the codebase and planning work before implementation.",
+    "mode": "primary",
+    "hidden": false,
+    "permissions": [
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.example",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/shell/*/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/tool-output/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/tmp/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.config/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "question",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "edit",
+        "resource": "*",
+        "effect": "deny"
+      },
+      {
+        "action": "edit",
+        "resource": "/home/sandbox/.opencode/plan/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.opencode/plan/*",
+        "effect": "allow"
+      },
+      {
+        "action": "context7_*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "subagent",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "shell",
+        "resource": "opencode run *",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "todo",
+        "effect": "deny"
+      }
+    ]
+  },
+  {
+    "id": "summary",
+    "name": "Summary",
+    "request": {
+      "settings": {},
+      "headers": {},
+      "body": {}
+    },
+    "system": "Summarize what was done in this conversation. Write like a pull request description.\n\nRules:\n- 2-3 sentences max\n- Describe the changes made, not the process\n- Do not mention running tests, builds, or other validation steps\n- Do not explain what the user asked for\n- Write in first person (I added..., I fixed...)\n- Never ask questions or add new questions\n- If the conversation ends with an unanswered question to the user, preserve that exact question\n- If the conversation ends with an imperative statement or request to the user (e.g. \"Now please run the command and paste the console output\"), always include that exact request in the summary",
+    "mode": "primary",
+    "hidden": true,
+    "permissions": [
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.example",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/shell/*/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/tool-output/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/tmp/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.config/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "deny"
+      },
+      {
+        "action": "context7_*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "subagent",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "shell",
+        "resource": "opencode run *",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "todo",
+        "effect": "deny"
+      }
+    ]
+  },
+  {
+    "id": "title",
+    "name": "Title",
+    "request": {
+      "settings": {},
+      "headers": {},
+      "body": {}
+    },
+    "system": "You are a title generator. You output ONLY a thread title. Nothing else.\n\n<task>\nGenerate a brief title that would help the user find this conversation later.\n\nFollow all rules in <rules>\nUse the <examples> so you know what a good title looks like.\nYour output must be:\n- A single line\n- <=50 characters\n- No explanations\n</task>\n\n<rules>\n- you MUST use the same language as the user message you are summarizing\n- Title must be grammatically correct and read naturally - no word salad\n- Never include tool names in the title (e.g. \"read tool\", \"bash tool\", \"edit tool\")\n- Focus on the main topic or question the user needs to retrieve\n- Vary your phrasing - avoid repetitive patterns like always starting with \"Analyzing\"\n- When a file is mentioned, focus on WHAT the user wants to do WITH the file, not just that they shared it\n- Keep exact: technical terms, numbers, filenames, HTTP codes\n- Remove: the, this, my, a, an\n- Never assume tech stack\n- Never use tools\n- NEVER respond to questions, just generate a title for the conversation\n- The title should NEVER include \"summarizing\" or \"generating\" when generating a title\n- DO NOT SAY YOU CANNOT GENERATE A TITLE OR COMPLAIN ABOUT THE INPUT\n- Always output something meaningful, even if the input is minimal.\n- If the user message is short or conversational (e.g. \"hello\", \"lol\", \"what's up\", \"hey\"):\n  -> create a title that reflects the user's tone or intent (such as Greeting, Quick check-in, Light chat, Intro message, etc.)\n</rules>\n\n<examples>\n\"debug 500 errors in production\" -> Debugging production 500 errors\n\"refactor user service\" -> Refactoring user service\n\"why is app.js failing\" -> app.js failure investigation\n\"implement rate limiting\" -> Rate limiting implementation\n\"how do I connect postgres to my API\" -> Postgres API connection\n\"best practices for React hooks\" -> React hooks best practices\n\"@src/credential.ts can you add refresh token support\" -> Credential refresh token support\n\"@utils/parser.ts this is broken\" -> Parser bug fix\n\"look at @config.json\" -> Config review\n\"@App.tsx add dark mode toggle\" -> Dark mode toggle in App\n</examples>",
+    "mode": "primary",
+    "hidden": true,
+    "permissions": [
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.*",
+        "effect": "ask"
+      },
+      {
+        "action": "read",
+        "resource": "*.env.example",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/shell/*/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.local/share/opencode/tool-output/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/tmp/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "external_directory",
+        "resource": "/home/sandbox/.config/opencode/*",
+        "effect": "allow"
+      },
+      {
+        "action": "*",
+        "resource": "*",
+        "effect": "deny"
+      },
+      {
+        "action": "context7_*",
+        "resource": "*",
+        "effect": "allow"
+      },
+      {
+        "action": "subagent",
+        "resource": "*",
+        "effect": "ask"
+      },
+      {
+        "action": "shell",
+        "resource": "opencode run *",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "read",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "grep",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "list",
+        "resource": "todo",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "**/.env*",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": ".secrets/**",
+        "effect": "deny"
+      },
+      {
+        "action": "blob",
+        "resource": "todo",
+        "effect": "deny"
+      }
+    ]
+  }
+]
