@@ -57,6 +57,7 @@ exec bwrap \
   --tmpfs /run \
   \
   --bind "$PROJECT" /working-dir \
+  --ro-bind "$PARRANDA/wrapped/bashrc" "$SANDBOX_HOME/.bashrc" \
   \
   --bind "$OC_USER_DATA" "$SANDBOX_HOME/.local/share/opencode" \
   --ro-bind "$OC_HOME/bin" "$SANDBOX_HOME/.opencode/bin" \
