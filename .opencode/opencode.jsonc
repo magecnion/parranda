@@ -1,6 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "permissions": [
-    { "action": "shell", "resource": "python3 -", "effect": "allow" },
-  ],
+  "agents": {
+    "build": {
+      "permissions": [
+        { "action": "shell", "resource": "python3 -", "effect": "allow" },
+      ],
+    },
+  },
 }
