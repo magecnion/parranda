@@ -2,6 +2,10 @@
   {
     "id": "build",
     "name": "Build",
+    "model": {
+      "id": "gpt-5.6-luna-fast",
+      "providerID": "openai"
+    },
     "request": {
       "settings": {},
       "headers": {},
@@ -77,64 +81,19 @@
         "effect": "deny"
       },
       {
-        "action": "read",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
+        "action": "*",
         "resource": "**/.env*",
         "effect": "deny"
       },
       {
-        "action": "grep",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
+        "action": "*",
         "resource": "todo",
         "effect": "deny"
       },
       {
-        "action": "list",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "todo",
-        "effect": "deny"
+        "action": "shell",
+        "resource": "python3 -",
+        "effect": "allow"
       }
     ]
   },
@@ -210,62 +169,12 @@
         "effect": "deny"
       },
       {
-        "action": "read",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
+        "action": "*",
         "resource": "**/.env*",
         "effect": "deny"
       },
       {
-        "action": "grep",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
+        "action": "*",
         "resource": "todo",
         "effect": "deny"
       }
@@ -420,62 +329,12 @@
         "effect": "deny"
       },
       {
-        "action": "read",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
+        "action": "*",
         "resource": "**/.env*",
         "effect": "deny"
       },
       {
-        "action": "grep",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
+        "action": "*",
         "resource": "todo",
         "effect": "deny"
       }
@@ -564,225 +423,14 @@
         "effect": "deny"
       },
       {
-        "action": "read",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "todo",
-        "effect": "deny"
-      }
-    ]
-  },
-  {
-    "id": "howto",
-    "name": "howto",
-    "model": {
-      "id": "gpt-5.6-luna",
-      "providerID": "openai"
-    },
-    "request": {
-      "settings": {},
-      "headers": {},
-      "body": {
-        "temperature": 0.1
-      }
-    },
-    "system": "- You answer generic technical how-to questions\n- Keep answers short and copy-pasteable but realiable\n- You can search on the web use official docs, help also with github issues, reddit\n- Do not ask follow-up questions unless the command would be dangerous or ambiguous.",
-    "description": "Answers side-note quick technical questions",
-    "mode": "subagent",
-    "hidden": false,
-    "permissions": [
-      {
         "action": "*",
-        "resource": "*",
-        "effect": "allow"
-      },
-      {
-        "action": "external_directory",
-        "resource": "*",
-        "effect": "ask"
-      },
-      {
-        "action": "read",
-        "resource": "*.env",
-        "effect": "ask"
-      },
-      {
-        "action": "read",
-        "resource": "*.env.*",
-        "effect": "ask"
-      },
-      {
-        "action": "read",
-        "resource": "*.env.example",
-        "effect": "allow"
-      },
-      {
-        "action": "external_directory",
-        "resource": "/home/sandbox/.local/share/opencode/shell/*/*",
-        "effect": "allow"
-      },
-      {
-        "action": "external_directory",
-        "resource": "/home/sandbox/.local/share/opencode/tool-output/*",
-        "effect": "allow"
-      },
-      {
-        "action": "external_directory",
-        "resource": "/tmp/opencode/*",
-        "effect": "allow"
-      },
-      {
-        "action": "external_directory",
-        "resource": "/home/sandbox/.config/opencode/*",
-        "effect": "allow"
-      },
-      {
-        "action": "context7_*",
-        "resource": "*",
-        "effect": "allow"
-      },
-      {
-        "action": "subagent",
-        "resource": "*",
-        "effect": "ask"
-      },
-      {
-        "action": "shell",
-        "resource": "opencode run *",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
         "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "todo",
         "effect": "deny"
       },
       {
         "action": "*",
-        "resource": "*",
+        "resource": "todo",
         "effect": "deny"
-      },
-      {
-        "action": "webfetch",
-        "resource": "*",
-        "effect": "allow"
-      },
-      {
-        "action": "websearch",
-        "resource": "*",
-        "effect": "allow"
-      },
-      {
-        "action": "skill",
-        "resource": "customize-opencode",
-        "effect": "allow"
       }
     ]
   },
@@ -866,62 +514,12 @@
         "effect": "deny"
       },
       {
-        "action": "read",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
+        "action": "*",
         "resource": "**/.env*",
         "effect": "deny"
       },
       {
-        "action": "grep",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
+        "action": "*",
         "resource": "todo",
         "effect": "deny"
       },
@@ -940,6 +538,11 @@
   {
     "id": "plan",
     "name": "Plan",
+    "model": {
+      "id": "gpt-5.6-lunat",
+      "providerID": "openai",
+      "variant": "medium"
+    },
     "request": {
       "settings": {},
       "headers": {},
@@ -1030,64 +633,19 @@
         "effect": "deny"
       },
       {
-        "action": "read",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
+        "action": "*",
         "resource": "**/.env*",
         "effect": "deny"
       },
       {
-        "action": "grep",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
+        "action": "*",
         "resource": "todo",
         "effect": "deny"
       },
       {
-        "action": "list",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "todo",
-        "effect": "deny"
+        "action": "edit",
+        "resource": "/working-dir/references/plan/*",
+        "effect": "allow"
       }
     ]
   },
@@ -1169,62 +727,12 @@
         "effect": "deny"
       },
       {
-        "action": "read",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
+        "action": "*",
         "resource": "**/.env*",
         "effect": "deny"
       },
       {
-        "action": "grep",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
+        "action": "*",
         "resource": "todo",
         "effect": "deny"
       }
@@ -1308,62 +816,12 @@
         "effect": "deny"
       },
       {
-        "action": "read",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "read",
+        "action": "*",
         "resource": "**/.env*",
         "effect": "deny"
       },
       {
-        "action": "grep",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "grep",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "list",
-        "resource": "todo",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": "**/.env*",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
-        "resource": ".secrets/**",
-        "effect": "deny"
-      },
-      {
-        "action": "blob",
+        "action": "*",
         "resource": "todo",
         "effect": "deny"
       }
