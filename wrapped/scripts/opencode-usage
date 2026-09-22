@@ -1,0 +1,229 @@
+#!/usr/bin/env node
+
+import { spawnSync } from "node:child_process";
+
+const usage = `Usage: opencode-usage [--today | --all] [--by-model] [--by-project] [--json]
+
+Report token usage from all locally recorded OpenCode sessions.
+
+Options:
+  --today     Report from local midnight until now.
+  --all       Report all recorded sessions (default).
+  --by-model  Also show a model-level breakdown.
+  --by-project Also show a provider-level breakdown for each project.
+  --json      Print the raw OpenCode statistics response.
+  --help      Show this help message.`;
+
+const args = new Set(process.argv.slice(2));
+const known = new Set([
+  "--today",
+  "--all",
+  "--by-model",
+  "--by-project",
+  "--json",
+  "--help",
+]);
+
+for (const arg of args) {
+  if (!known.has(arg)) {
+    console.error(`Unknown option: ${arg}\n\n${usage}`);
+    process.exit(2);
+  }
+}
+
+if (args.has("--help")) {
+  console.log(usage);
+  process.exit(0);
+}
+
+if (args.has("--today") && args.has("--all")) {
+  console.error("Use either --today or --all, not both.");
+  process.exit(2);
+}
+
+const query = new URLSearchParams({ tools: "none" });
+if (args.has("--today")) {
+  const now = new Date();
+  const startOfToday = new Date(now);
+  startOfToday.setHours(0, 0, 0, 0);
+  // The session-stats endpoint accepts Unix timestamps. ISO date strings cause
+  // an HTTP 500 (`Invalid date`) in OpenCode 2.0.12.
+  query.set("from", String(startOfToday.getTime()));
+  query.set("to", String(now.getTime()));
+}
+
+const request = (path) => {
+  const result = spawnSync("opencode", ["api", "--standalone", "get", path], {
+    encoding: "utf8",
+    timeout: 30_000,
+  });
+  if (result.error) {
+    console.error(`Unable to run OpenCode: ${result.error.message}`);
+    process.exit(1);
+  }
+  if (result.status !== 0) {
+    console.error(
+      result.stderr.trim() ||
+        result.stdout.trim() ||
+        "OpenCode statistics request failed.",
+    );
+    process.exit(result.status || 1);
+  }
+  try {
+    return JSON.parse(result.stdout);
+  } catch {
+    console.error("OpenCode returned an invalid API response.");
+    process.exit(1);
+  }
+};
+
+const response = request(`/api/experimental/session/stats?${query}`);
+
+if (args.has("--json")) {
+  console.log(JSON.stringify(response, null, 2));
+  process.exit(0);
+}
+
+const data = response.data;
+if (!data || !Array.isArray(data.models)) {
+  console.error("OpenCode statistics response did not include model usage.");
+  process.exit(1);
+}
+
+const empty = () => ({
+  steps: 0,
+  input: 0,
+  output: 0,
+  reasoning: 0,
+  cacheRead: 0,
+  cacheWrite: 0,
+  cost: 0,
+});
+const add = (total, item) => {
+  const tokens = item.tokens || {};
+  const cache = tokens.cache || {};
+  total.steps += item.steps || 0;
+  total.input += tokens.input || 0;
+  total.output += tokens.output || 0;
+  total.reasoning += tokens.reasoning || 0;
+  total.cacheRead += cache.read || 0;
+  total.cacheWrite += cache.write || 0;
+  total.cost += item.cost || 0;
+  return total;
+};
+
+const providerTotals = (stats) => {
+  const providers = new Map();
+  for (const item of stats.models) {
+    const provider = item.model?.providerID || "unknown";
+    add(
+      providers.get(provider) || providers.set(provider, empty()).get(provider),
+      item,
+    );
+  }
+  return providers;
+};
+
+const providers = providerTotals(data);
+
+const formatNumber = new Intl.NumberFormat();
+const formatCost = new Intl.NumberFormat(undefined, {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 6,
+});
+const rangeDate = (time) => new Date(time).toLocaleString();
+const printRows = (rows) => {
+  const headers = [
+    "Provider",
+    "Steps",
+    "Input",
+    "Output",
+    "Reasoning",
+    "Cache read",
+    "Cache write",
+    "Recorded cost",
+  ];
+  const values = rows.map(([name, total]) => [
+    name,
+    formatNumber.format(total.steps),
+    formatNumber.format(total.input),
+    formatNumber.format(total.output),
+    formatNumber.format(total.reasoning),
+    formatNumber.format(total.cacheRead),
+    formatNumber.format(total.cacheWrite),
+    formatCost.format(total.cost),
+  ]);
+  const widths = headers.map((header, index) =>
+    Math.max(header.length, ...values.map((row) => row[index].length)),
+  );
+  const line = (row) =>
+    row.map((cell, index) => cell.padStart(widths[index])).join("  ");
+  console.log(line(headers));
+  console.log(widths.map((width) => "-".repeat(width)).join("  "));
+  for (const row of values) console.log(line(row));
+};
+
+console.log(
+  `OpenCode usage: ${rangeDate(data.range.from)} – ${rangeDate(data.range.to)}`,
+);
+console.log(
+  `Sessions: ${data.sessions}; subagents: ${data.subagents}; local timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`,
+);
+console.log("");
+printRows([...providers.entries()].sort(([a], [b]) => a.localeCompare(b)));
+
+if (args.has("--by-model")) {
+  console.log("\nModel breakdown:");
+  const models = new Map();
+  for (const item of data.models) {
+    const key = `${item.model?.providerID || "unknown"}/${item.model?.id || "unknown"}#${item.model?.variant || "default"}`;
+    add(models.get(key) || models.set(key, empty()).get(key), item);
+  }
+  printRows([...models.entries()].sort(([a], [b]) => a.localeCompare(b)));
+}
+
+if (args.has("--by-project")) {
+  const projects = request("/api/project");
+  if (!Array.isArray(projects)) {
+    console.error("OpenCode project list response was invalid.");
+    process.exit(1);
+  }
+  const canonicalCounts = new Map();
+  for (const project of projects) {
+    const canonical = project.canonical || project.id;
+    canonicalCounts.set(canonical, (canonicalCounts.get(canonical) || 0) + 1);
+  }
+  console.log("\nProject breakdown:");
+  for (const project of projects.sort((a, b) =>
+    (a.canonical || "").localeCompare(b.canonical || ""),
+  )) {
+    const projectQuery = new URLSearchParams(query);
+    projectQuery.set("project", project.id);
+    const projectResponse = request(
+      `/api/experimental/session/stats?${projectQuery}`,
+    );
+    const projectData = projectResponse.data;
+    if (
+      !projectData ||
+      !Array.isArray(projectData.models) ||
+      projectData.sessions === 0
+    )
+      continue;
+    const canonical = project.canonical || project.id;
+    const label =
+      canonicalCounts.get(canonical) > 1
+        ? `${canonical} [${project.id.slice(0, 8)}]`
+        : canonical;
+    console.log(`\n${label} (${projectData.sessions} sessions)`);
+    printRows(
+      [...providerTotals(projectData).entries()].sort(([a], [b]) =>
+        a.localeCompare(b),
+      ),
+    );
+  }
+}
+
+// if ([...providers.values()].every((total) => total.cost === 0)) {
+//   console.log("\nNote: OpenCode reported $0 recorded cost. Token usage is still valid, but actual billing must come from your provider or configured model pricing.");
+// }

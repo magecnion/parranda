@@ -58,6 +58,7 @@ exec bwrap \
   \
   --bind "$PROJECT" /working-dir \
   --ro-bind "$PARRANDA/wrapped/bashrc" "$SANDBOX_HOME/.bashrc" \
+  --ro-bind "$PARRANDA/wrapped/scripts" "$SANDBOX_HOME/scripts" \
   \
   --bind "$OC_USER_DATA" "$SANDBOX_HOME/.local/share/opencode" \
   --ro-bind "$OC_HOME/bin" "$SANDBOX_HOME/.opencode/bin" \
@@ -79,7 +80,7 @@ exec bwrap \
   --setenv HOME "$SANDBOX_HOME" \
   --setenv USER sandbox \
   --setenv OF_ROOT "${OPEN_FRAMEWORKS:+$SANDBOX_HOME/openFrameworks}" \
-  --setenv PATH /usr/local/bin:/usr/bin:/bin:/home/sandbox/.cargo/bin:/home/sandbox/.local/node/bin:/home/sandbox/.local/share/pnpm:/home/sandbox/.local/share/pnpm/bin:/home/sandbox/.opencode/bin \
+  --setenv PATH /usr/local/bin:/usr/bin:/bin:/home/sandbox/.cargo/bin:/home/sandbox/.local/node/bin:/home/sandbox/.local/share/pnpm:/home/sandbox/.local/share/pnpm/bin:/home/sandbox/.opencode/bin:/home/sandbox/scripts \
   \
   --setenv TERM "$TERM" \
   --setenv COLORTERM "$COLORTERM" \
