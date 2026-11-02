@@ -7,6 +7,7 @@ SANDBOX_HOME="/home/sandbox"
 # OpenCode
 OC_HOME="$HOME/.opencode"
 OC_SKILLS=$PARRANDA/skills
+OC_PLAN=$PROJECT/plans
 OC_AGENTS=$PARRANDA/agents
 OC_PLUGINS=$PARRANDA/plugins
 OC_COMMANDS=$PARRANDA/commands
@@ -33,6 +34,7 @@ CARGO_HOME="$HOME/.cargo"
 RUSTUP_HOME="$HOME/.rustup"
 
 mkdir -p "$OC_USER_DATA"
+mkdir -p "$OC_PLAN"
 
 exec bwrap \
   --unshare-all \
@@ -50,13 +52,14 @@ exec bwrap \
   --ro-bind /etc/resolv.conf /etc/resolv.conf \
   --ro-bind /etc/hosts /etc/hosts \
   --ro-bind /etc/nsswitch.conf /etc/nsswitch.conf \
+  --ro-bind /etc/alternatives /etc/alternatives \
   \
   --proc /proc \
   --dev /dev \
   --tmpfs /tmp \
   --tmpfs /run \
   \
-  --bind "$PROJECT" /working-dir \
+  --bind "$PROJECT" "$PROJECT" \
   --ro-bind "$PARRANDA/wrapped/bashrc" "$SANDBOX_HOME/.bashrc" \
   --ro-bind "$PARRANDA/wrapped/scripts" "$SANDBOX_HOME/scripts" \
   \
@@ -68,6 +71,7 @@ exec bwrap \
   --ro-bind "$OC_PLUGINS" "$SANDBOX_HOME/.config/opencode/plugins" \
   --ro-bind "$OC_AGENTS" "$SANDBOX_HOME/.config/opencode/agents" \
   --ro-bind "$OC_COMMANDS" "$SANDBOX_HOME/.config/opencode/commands" \
+  --bind "$OC_PLAN" "$SANDBOX_HOME/.opencode/plan" \
   \
   --ro-bind "$CARGO_HOME" "$SANDBOX_HOME/.cargo" \
   --ro-bind "$RUSTUP_HOME" "$SANDBOX_HOME/.rustup" \
@@ -76,7 +80,8 @@ exec bwrap \
   \
   "${OPEN_FRAMEWORKS_ARGS[@]}" \
   \
-  --chdir /working-dir \
+  --chdir "$PROJECT" \
+  --setenv PROJECT_ROOT "$PROJECT" \
   --setenv HOME "$SANDBOX_HOME" \
   --setenv USER sandbox \
   --setenv OF_ROOT "${OPEN_FRAMEWORKS:+$SANDBOX_HOME/openFrameworks}" \
