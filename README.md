@@ -90,6 +90,8 @@ A script in Parranda writes `permission-suggestion.json` to the working project 
 
 ### Scripts
 
+The `wrapped/scripts/` directory is mounted inside the sandbox and added to `PATH`. Any executable script placed there is available by name from any directory in the sandbox terminal.
+
 **opencode-usage**
 
 Reports token usage and recorded costs from locally stored OpenCode sessions, grouped by provider.
