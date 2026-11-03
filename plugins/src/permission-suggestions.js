@@ -1,11 +1,12 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import { Plugin } from "@opencode/plugin";
 
 export default Plugin.define({
   id: "permission-suggestions",
   async setup(ctx) {
-    const logDirectory = "/working-dir/.opencode";
-    const logFile = "/working-dir/.opencode/permission-suggestions.json";
+    const logDirectory = join(process.env.PROJECT_ROOT ?? ctx.location.directory, ".opencode");
+    const logFile = join(logDirectory, "permission-suggestions.json");
     const controller = new AbortController();
 
     await mkdir(logDirectory, { recursive: true });
