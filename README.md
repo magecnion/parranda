@@ -100,7 +100,9 @@ Reports token usage and recorded costs from locally stored OpenCode sessions, gr
 opencode-usage                          # All recorded sessions
 opencode-usage --today                  # Today, using the local timezone
 opencode-usage --by-model --by-project  # Additional breakdowns
-opencode-usage --json                   # Raw statistics as JSON
+opencode-usage --json                   # Global statistics as JSON
+opencode-usage --session ses_example --by-model # Session and descendant usage
+opencode-usage --session ses_example --json     # Session report as JSON
 ```
 
 Recorded costs may differ from actual provider billing.

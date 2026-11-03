@@ -2,19 +2,35 @@
 
 import { spawnSync } from "node:child_process";
 
-const usage = `Usage: opencode-usage [--today | --all] [--by-model] [--by-project] [--json]
+const usage = `Usage: opencode-usage [--today | --all | --session <id>] [--by-model] [--by-project] [--json]
 
 Report token usage from all locally recorded OpenCode sessions.
 
 Options:
   --today     Report from local midnight until now.
   --all       Report all recorded sessions (default).
+  --session <id> Report one session and all descendants, including idle - busy timing.
   --by-model  Also show a model-level breakdown.
   --by-project Also show a provider-level breakdown for each project.
   --json      Print the raw OpenCode statistics response.
   --help      Show this help message.`;
 
-const args = new Set(process.argv.slice(2));
+const argv = process.argv.slice(2);
+let sessionID;
+const flags = [];
+for (let index = 0; index < argv.length; index++) {
+  if (argv[index] !== "--session") {
+    flags.push(argv[index]);
+    continue;
+  }
+  const value = argv[++index];
+  if (sessionID || !value || value.startsWith("--")) {
+    console.error("Use --session once, followed by a session ID.");
+    process.exit(2);
+  }
+  sessionID = value;
+}
+const args = new Set(flags);
 const known = new Set([
   "--today",
   "--all",
@@ -40,6 +56,114 @@ if (args.has("--today") && args.has("--all")) {
   console.error("Use either --today or --all, not both.");
   process.exit(2);
 }
+if (sessionID && ["--today", "--all", "--by-project"].some((flag) => args.has(flag))) {
+  console.error("--session cannot be combined with --today, --all, or --by-project.");
+  process.exit(2);
+}
+
+// SQLite is internal/version-dependent. Snapshot the live database before reading
+// a session tree, and fail explicitly if the required schema is unavailable.
+const sessionReport = () => {
+  const result = spawnSync("python3", ["-c", String.raw`
+import json, math, os, sqlite3, subprocess, sys, tempfile
+
+def report():
+    path = subprocess.run(["opencode", "debug", "paths", "db"], check=True,
+                          capture_output=True, text=True, timeout=30).stdout.strip()
+    source = sqlite3.connect(__import__('pathlib').Path(path).resolve().as_uri() + '?mode=ro', uri=True)
+    source.execute('PRAGMA query_only=ON')
+    fd, snapshot = tempfile.mkstemp(prefix='opencode-usage-', suffix='.db', dir='/tmp/opencode')
+    os.close(fd)
+    try:
+        target = sqlite3.connect(snapshot)
+        try:
+            source.backup(target)
+        finally:
+            target.close()
+            source.close()
+        db = sqlite3.connect('file:' + snapshot + '?mode=ro', uri=True)
+        db.row_factory = sqlite3.Row
+        try:
+            for table, required in {
+                'session_v2': {'id', 'parent_id', 'time_busy', 'time_idle'},
+                'session_message': {'session_id', 'type', 'data'},
+            }.items():
+                columns = {row['name'] for row in db.execute('PRAGMA table_info(' + table + ')')}
+                if not required <= columns:
+                    raise ValueError('Unsupported OpenCode schema: missing columns in ' + table)
+            sessions = db.execute('''WITH RECURSIVE tree(id) AS (
+                SELECT id FROM session_v2 WHERE id = ?
+                UNION
+                SELECT s.id FROM session_v2 s JOIN tree t ON s.parent_id = t.id
+            ) SELECT s.id, s.time_busy, s.time_idle FROM session_v2 s JOIN tree t ON s.id = t.id''',
+                (sys.argv[1],)).fetchall()
+            if not sessions:
+                raise ValueError('Session not found: ' + sys.argv[1])
+            models, timings, issues = {}, [], []
+            def number(value):
+                return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value) and value >= 0
+            def add(total, key, value):
+                total[key] = total[key] + value if total[key] is not None and number(value) else None
+            for session in sessions:
+                sid, busy, idle = session['id'], session['time_busy'], session['time_idle']
+                valid_busy, valid_idle = number(busy), number(idle)
+                state = 'complete' if valid_busy and valid_idle and idle >= busy else 'running' if valid_busy and (idle is None or (valid_idle and idle < busy)) else 'unavailable'
+                timings.append({'sessionID': sid, 'busy': busy, 'idle': idle,
+                                'elapsedMs': idle - busy if state == 'complete' else None, 'status': state})
+                messages = db.execute("SELECT data FROM session_message WHERE session_id = ? AND type = 'assistant'", (sid,)).fetchall()
+                if not messages:
+                    issues.append(sid + ': no recorded assistant usage')
+                for row in messages:
+                    try:
+                        message = json.loads(row['data'])
+                        if not isinstance(message, dict):
+                            raise ValueError()
+                    except (ValueError, TypeError):
+                        issues.append(sid + ': unreadable assistant usage')
+                        continue
+                    model = message.get('model') or {}
+                    if not isinstance(model, dict):
+                        model = {}
+                    key = tuple(model.get(k) for k in ('providerID', 'id', 'variant'))
+                    if not all(value is None or isinstance(value, str) for value in key):
+                        key = (None, None, None)
+                    total = models.setdefault(key, {'steps': 0, 'input': 0, 'output': 0, 'reasoning': 0,
+                                                   'read': 0, 'write': 0, 'cost': 0})
+                    total['steps'] += 1
+                    tokens = message.get('tokens')
+                    tokens = tokens if isinstance(tokens, dict) else {}
+                    cache = tokens.get('cache')
+                    cache = cache if isinstance(cache, dict) else {}
+                    for metric in ('input', 'output', 'reasoning'):
+                        add(total, metric, tokens.get(metric))
+                    for metric in ('read', 'write'):
+                        add(total, metric, cache.get(metric))
+                    add(total, 'cost', message.get('cost'))
+                    if None in total.values() or not key[0] or not key[1]:
+                        issues.append(sid + ': incomplete usage or model metadata')
+            models_output = [dict(model=dict(zip(('providerID', 'id', 'variant'), key)), steps=t['steps'],
+                cost=t['cost'], tokens={**{k:t[k] for k in ('input', 'output', 'reasoning')},
+                    'cache': {'read':t['read'], 'write':t['write']}}) for key,t in models.items()]
+            return {'data': {'models': models_output, 'sessions': len(sessions), 'subagents': len(sessions)-1},
+                    'session': {'id': sys.argv[1], 'timings': timings, 'issues': sorted(set(issues)),
+                                'usageStatus': 'partial' if issues else 'complete'}}
+        finally:
+            db.close()
+    finally:
+        os.unlink(snapshot)
+
+try:
+    print(json.dumps(report()))
+except Exception as error:
+    print('Unable to report session usage: ' + str(error), file=sys.stderr)
+    sys.exit(1)
+`, sessionID], { encoding: "utf8", timeout: 60_000 });
+  if (result.error || result.status !== 0) {
+    console.error(result.error?.message || result.stderr.trim() || "Session usage request failed.");
+    process.exit(1);
+  }
+  return JSON.parse(result.stdout);
+};
 
 const query = new URLSearchParams({ tools: "none" });
 if (args.has("--today")) {
@@ -77,7 +201,7 @@ const request = (path) => {
   }
 };
 
-const response = request(`/api/experimental/session/stats?${query}`);
+const response = sessionID ? sessionReport() : request(`/api/experimental/session/stats?${query}`);
 
 if (args.has("--json")) {
   console.log(JSON.stringify(response, null, 2));
@@ -103,12 +227,11 @@ const add = (total, item) => {
   const tokens = item.tokens || {};
   const cache = tokens.cache || {};
   total.steps += item.steps || 0;
-  total.input += tokens.input || 0;
-  total.output += tokens.output || 0;
-  total.reasoning += tokens.reasoning || 0;
-  total.cacheRead += cache.read || 0;
-  total.cacheWrite += cache.write || 0;
-  total.cost += item.cost || 0;
+  for (const [key, value] of Object.entries({ input: tokens.input, output: tokens.output,
+    reasoning: tokens.reasoning, cacheRead: cache.read, cacheWrite: cache.write, cost: item.cost })) {
+    total[key] = sessionID && (total[key] === null || value == null)
+      ? null : total[key] + (value || 0);
+  }
   return total;
 };
 
@@ -147,12 +270,9 @@ const printRows = (rows) => {
   const values = rows.map(([name, total]) => [
     name,
     formatNumber.format(total.steps),
-    formatNumber.format(total.input),
-    formatNumber.format(total.output),
-    formatNumber.format(total.reasoning),
-    formatNumber.format(total.cacheRead),
-    formatNumber.format(total.cacheWrite),
-    formatCost.format(total.cost),
+    ...[total.input, total.output, total.reasoning, total.cacheRead, total.cacheWrite]
+      .map((value) => value === null ? "unavailable" : formatNumber.format(value)),
+    total.cost === null ? "unavailable" : formatCost.format(total.cost),
   ]);
   const widths = headers.map((header, index) =>
     Math.max(header.length, ...values.map((row) => row[index].length)),
@@ -164,9 +284,17 @@ const printRows = (rows) => {
   for (const row of values) console.log(line(row));
 };
 
-console.log(
-  `OpenCode usage: ${rangeDate(data.range.from)} – ${rangeDate(data.range.to)}`,
-);
+if (sessionID) {
+  console.log(`OpenCode usage: ${sessionID} and descendants`);
+  console.log(`Usage status: ${response.session.usageStatus}`);
+  console.log("Timing: latest busy period per session (idle - busy), not lifetime duration.");
+  for (const timing of response.session.timings) {
+    console.log(`  ${timing.sessionID}: ${timing.elapsedMs === null ? timing.status : `${(timing.elapsedMs / 1000).toFixed(3)} s`}`);
+  }
+  for (const issue of response.session.issues) console.log(`Warning: ${issue}`);
+} else {
+  console.log(`OpenCode usage: ${rangeDate(data.range.from)} – ${rangeDate(data.range.to)}`);
+}
 console.log(
   `Sessions: ${data.sessions}; subagents: ${data.subagents}; local timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`,
 );
