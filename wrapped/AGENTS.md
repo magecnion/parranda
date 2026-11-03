@@ -3,7 +3,8 @@
 - Prefer simple solutions
 - Tell me something I need to know even if I don't want to hear it
 - When using customize-opencode skill also look at official documentation to ensure the answer using provided context7 mcp
-- Every time you don't have permissions tell me which permissions configuration is needed to add to the opencode.jsonc in order to have the permission to perform the action. Be as granular as possible. I want to avoid wildcarded permissions.
+- Context efficiency. When writing or editing agent-facing documentation (skills, instructions, references), use the minimum text needed for correct action. State each rule once, keep it in the document responsible for it, and rely on existing context rather than repeating it. Remove redundant explanations, examples, and implementation details. Preserve necessary constraints and actionable specifics.
+- Create Git worktrees only in `$PROJECT_ROOT/.worktrees/<name>`.
 
 ## Sanboxed environment
 

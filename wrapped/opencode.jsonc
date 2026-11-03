@@ -10,22 +10,10 @@
   ],
   "agents": {
     "plan": {
-      "model": "openai/gpt-5.6-lunat#medium",
-      "permissions": [
-        {
-          "action": "edit",
-          "resource": "/working-dir/references/plan/*",
-          "effect": "allow",
-        },
-        // {
-        //   "action": "external_directory",
-        //   "resource": "/working-dir/references/plan/*",
-        //   "effect": "allow",
-        // },
-      ],
+      "model": "openai/gpt-6.1-sol",
     },
     "build": {
-      "model": "openai/gpt-5.6-luna-fast",
+      "model": "openai/gpt-6.1-sol",
     },
   },
   "mcp": {

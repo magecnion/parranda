@@ -5,14 +5,14 @@ PROJECT=$(realpath "$1")
 SANDBOX_HOME="/home/sandbox"
 
 # OpenCode
-OC_HOME="$HOME/.opencode"
-OC_SKILLS=$PARRANDA/skills
+OC_HOST_HOME="$HOME/.opencode"
+OC_HOST_SANDBOX_HOME="$HOME/.local/share/opencode/sandbox/home"
+OC_HOST_USER_DATA="$OC_HOST_SANDBOX_HOME/.local/share/opencode"
 OC_PLAN=$PROJECT/plans
+OC_SKILLS=$PARRANDA/skills
 OC_AGENTS=$PARRANDA/agents
 OC_PLUGINS=$PARRANDA/plugins
 OC_COMMANDS=$PARRANDA/commands
-OC_SANDBOX_HOME="$HOME/.local/share/opencode/sandbox/home"
-OC_USER_DATA="$OC_SANDBOX_HOME/.local/share/opencode"
 
 # projects specific: openFrameworks
 OPEN_FRAMEWORKS=${2:-}
@@ -33,7 +33,7 @@ NPX_HOME="$NODE_HOME/bin/npx"
 CARGO_HOME="$HOME/.cargo"
 RUSTUP_HOME="$HOME/.rustup"
 
-mkdir -p "$OC_USER_DATA"
+mkdir -p "$OC_HOST_USER_DATA"
 mkdir -p "$OC_PLAN"
 
 exec bwrap \
@@ -60,11 +60,11 @@ exec bwrap \
   --tmpfs /run \
   \
   --bind "$PROJECT" "$PROJECT" \
-  --ro-bind "$PARRANDA/wrapped/bashrc" "$SANDBOX_HOME/.bashrc" \
   --ro-bind "$PARRANDA/wrapped/scripts" "$SANDBOX_HOME/scripts" \
   \
-  --bind "$OC_USER_DATA" "$SANDBOX_HOME/.local/share/opencode" \
-  --ro-bind "$OC_HOME/bin" "$SANDBOX_HOME/.opencode/bin" \
+  --bind "$OC_HOST_USER_DATA" "$SANDBOX_HOME/.local/share/opencode" \
+  --ro-bind "$OC_HOST_HOME/bin" "$SANDBOX_HOME/.opencode/bin" \
+  \
   --ro-bind "$PARRANDA/wrapped/AGENTS.md" "$SANDBOX_HOME/.config/opencode/AGENTS.md" \
   --ro-bind "$PARRANDA/wrapped/opencode.jsonc" "$SANDBOX_HOME/.config/opencode/opencode.jsonc" \
   --ro-bind "$OC_SKILLS" "$SANDBOX_HOME/.config/opencode/skills" \
@@ -90,4 +90,4 @@ exec bwrap \
   --setenv TERM "$TERM" \
   --setenv COLORTERM "$COLORTERM" \
   --setenv SHELL /bin/bash \
-  /bin/bash
+  /bin/bash -c 'opencode service set disabled true && exec /bin/bash'

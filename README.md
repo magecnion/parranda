@@ -1,7 +1,5 @@
 # Parranda
 
-read-only host mirror strategy
-
 `Parranda` hosts agents and agent-related tools, such as skills and commands.
 
 The core philosophy of this project is to run agents in **isolation mode** for safety and reproducibility.
@@ -41,20 +39,66 @@ make -C "<your-parranda-project-directory>/sandbox/docker" run-opencode PROJECT_
 OPENCODE_HOME_DIR="<host-location>" make -C "<your-parranda-project-directory>" run-opencode PROJECT_PATH="$PWD"
 ```
 
-as you can see there might be project that requires specific software (as openFrameworks) so that we have to provide the bwrap sandbox the place where the deps instalation is by passing when make run + bind the path with the deps (if it is in different usual paths) and provide the env vars needed
-
 ## OpenCode Sandboxed via Bwrap
 
+### Run
+
+Run from the project directory:
+
+```sh
 export PARRANDA=<your-parranda-project-directory>
 make -C "$PARRANDA" run-wrapped PROJECT="$PWD"
+```
 
-en el host hay un OC_SANDBOX_HOME donde se van a persistir cosas (TODO)
+Standalone mode allows multiple sandboxes to run simultaneously. See [OpenCode’s background service documentation](https://opencode.ai/v2/docs/cli#background-service).
 
-se bindea opencode config: skills, agents, commands, opencode.json y AGENTS.md
-se puede modificar desde el host pero el agent no puede modificarlo
+### Host bindings
 
-because /usr /bin /lib and /lib64 are binded in wrapped environment it has access to all the binaries installed in the host, easier for testing
+stateful data explnation as sanbxoed envinrment
 
-# Plugins
+#### User data
 
-he creado un script que escribe permission-suggestion.json en el "working-dir", es decir, en el projecto en cuestion en el que se esta trabajando, para copiar y pegar, aunque el script está en parranda
+Sandbox data persists under `$HOME/.local/share/opencode/sandbox/home` on the host, defined by `OC_HOST_SANDBOX_HOME` in `wrapped/run.sh`. The database is stored at `$OC_HOST_SANDBOX_HOME/.local/share/opencode/opencode.db`.
+
+#### Harness
+
+Skills, agents, commands, plugins, `opencode.jsonc`, and `AGENTS.md` are mounted from the host. They can be edited on the host, but not by the agent.
+
+The Plan agent can only write to its designated plan directory. The project's `plans/` directory is mounted at `~/.opencode/plan` inside the sandbox, so plans are saved directly in the project.
+
+#### Read-only host mirror strategy
+
+The host’s `/usr`, `/bin`, `/lib`, and `/lib64` directories are mounted read-only, making host-installed binaries available inside the sandbox for testing.
+
+### Project-specific dependencies
+
+Some projects require additional software, such as openFrameworks. Pass its location when running `make`, bind any dependency paths not already available inside the sandbox, and provide the required environment variables.
+
+For example:
+
+```sh
+# openFrameworks is mounted read-only at /home/sandbox/openFrameworks and exposed inside the sandbox through OF_ROOT.
+#
+make -C "$PARRANDA" run-wrapped \
+  PROJECT="$PWD" \
+  OPEN_FRAMEWORKS=/path/to/openFrameworks
+```
+
+### Plugins
+
+A script in Parranda writes `permission-suggestion.json` to the working project directory, making its suggestions easy to copy and paste.
+
+### Scripts
+
+**opencode-usage**
+
+Reports token usage and recorded costs from locally stored OpenCode sessions, grouped by provider.
+
+```sh
+opencode-usage                          # All recorded sessions
+opencode-usage --today                  # Today, using the local timezone
+opencode-usage --by-model --by-project  # Additional breakdowns
+opencode-usage --json                   # Raw statistics as JSON
+```
+
+Recorded costs may differ from actual provider billing.
