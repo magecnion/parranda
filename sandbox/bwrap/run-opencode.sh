@@ -9,10 +9,10 @@ OC_HOST_HOME="$HOME/.opencode"
 OC_HOST_SANDBOX_HOME="$HOME/.local/share/opencode/sandbox/home"
 OC_HOST_USER_DATA="$OC_HOST_SANDBOX_HOME/.local/share/opencode"
 OC_PLAN=$PROJECT/plans
-OC_SKILLS=$PARRANDA/skills
-OC_AGENTS=$PARRANDA/agents
-OC_PLUGINS=$PARRANDA/plugins
-OC_COMMANDS=$PARRANDA/commands
+OC_SKILLS=$PARRANDA/sandbox/common/skills
+OC_AGENTS=$PARRANDA/sandbox/opencode/agents
+OC_PLUGINS=$PARRANDA/sandbox/opencode/plugins
+OC_COMMANDS=$PARRANDA/sandbox/opencode/commands
 
 # projects specific: openFrameworks
 OPEN_FRAMEWORKS=${2:-}
@@ -60,13 +60,13 @@ exec bwrap \
   --tmpfs /run \
   \
   --bind "$PROJECT" "$PROJECT" \
-  --ro-bind "$PARRANDA/wrapped/scripts" "$SANDBOX_HOME/scripts" \
+  --ro-bind "$PARRANDA/sandbox/opencode/scripts" "$SANDBOX_HOME/scripts" \
   \
   --bind "$OC_HOST_USER_DATA" "$SANDBOX_HOME/.local/share/opencode" \
   --ro-bind "$OC_HOST_HOME/bin" "$SANDBOX_HOME/.opencode/bin" \
   \
-  --ro-bind "$PARRANDA/wrapped/AGENTS.md" "$SANDBOX_HOME/.config/opencode/AGENTS.md" \
-  --ro-bind "$PARRANDA/wrapped/opencode.jsonc" "$SANDBOX_HOME/.config/opencode/opencode.jsonc" \
+  --ro-bind "$PARRANDA/sandbox/common/AGENTS.md" "$SANDBOX_HOME/.config/opencode/AGENTS.md" \
+  --ro-bind "$PARRANDA/sandbox/opencode/opencode.jsonc" "$SANDBOX_HOME/.config/opencode/opencode.jsonc" \
   --ro-bind "$OC_SKILLS" "$SANDBOX_HOME/.config/opencode/skills" \
   --ro-bind "$OC_PLUGINS" "$SANDBOX_HOME/.config/opencode/plugins" \
   --ro-bind "$OC_AGENTS" "$SANDBOX_HOME/.config/opencode/agents" \

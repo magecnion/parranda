@@ -6,15 +6,16 @@
     { "action": "context7_*", "resource": "*", "effect": "allow" },
     { "action": "subagent", "resource": "*", "effect": "ask" },
     { "action": "shell", "resource": "opencode run *", "effect": "deny" },
-    { "action": "*", "resource": "**/.env*", "effect": "deny" },
+    { "action": "*", "resource": ".env*", "effect": "deny" },
+    { "action": "*", "resource": "*/.env*", "effect": "deny" },
     { "action": "*", "resource": "todo", "effect": "deny" },
   ],
   "agents": {
     "plan": {
-      "model": "openai/gpt-6.1-sol",
+      "model": "openai/gpt-6-astra",
     },
     "build": {
-      "model": "openai/gpt-6.1-sol",
+      "model": "openai/gpt-6.1-sol#high",
       "permissions": [
         { "action": "subagent", "resource": "general", "effect": "allow" },
       ],
